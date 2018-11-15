@@ -178,7 +178,7 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			elem ++;
 		}
-		if(strcmp(word, "add") == 0)
+		/*if(strcmp(word, "add") == 0)
 		{
 			*(second + j) = 14;
 			for(int k = 0; k < 10; k++)
@@ -187,7 +187,7 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			printf("%s\n", first + i);
 			elem ++;
-		}
+		}*/
 		if(strcmp(word, "div") == 0)
 		{
 			*(second + j) = 13;
@@ -336,11 +336,11 @@ int ASM::ConvertAsm(char * argv)
 			elem += 2;
 		}
 		*/
-
-		#define LINE *(second + j) = CMD_##NUM;
+		/*go to a header of the asm.*/
+		//#define LINE *(second + j) = CMD_##NUM;
 		#define COMMAND( CMD , CODE )	\
 		if (strcmp(word, #CMD) == 0)\
-		{\//go to a header of the asm.\
+		{\
 			CODE	\
 		}\
 
