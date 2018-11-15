@@ -154,4 +154,3 @@ void Stack::StackPrint()
 		std::cout << "The " << i + 1 << " element of a stack is " << data[i + 1] << std::endl;
 	std::cout  << std::endl;
 }
-

@@ -8,14 +8,26 @@ const int DEFAULT_STACK_SIZE = 8;
 
 enum COMMANDS
 {
+
+#define COMMAND(A, B) A_##NUM ,
+	#include "Commads.h"
+	N_CMDS
+#undef COMMAND
+
+
+
+
+
+
 	EXIT_FROM_CODE  = 0,
-	PUSH 			= 1,
-	ADD  			= 2,
-	MUL  			= 3,
-	SUB  			= 4,
-	POP  			= 5,
-	OUT  			= 6,
-	END  			= 7
+	PUSH 			= 5,
+	ADD  			= 14,
+	MUL  			= 12,
+	SUB  			= 11,
+	POP  			= 10,
+	OUT  			= 15,
+	END  			= 16,
+	JMP				= 20
 };
 
 class CPU
@@ -81,12 +93,23 @@ int CPU::Execution(char * codebuff)
 	{
 		switch(codebuff[i])
 		{
+
+			#define COMMAND(A, B, C) \
+			case A_##NUM:			\
+			{						\
+				C 					\
+				break;				\
+			}					
+			#include "Commads.h"
+			#undef COMMAND
+
 			case EXIT_FROM_CODE:
 				printf("You went out from your code\n");
 				break;
 	
 			case PUSH:
 				printf("push here!\n");
+				printf("pointer to a push is %d\n", i);
 				argstack.StackPush(codebuff[i + 1]);
 				i += 5;
 				argstack.StackPrint();
@@ -131,7 +154,7 @@ int CPU::Execution(char * codebuff)
 	
 			case POP:
 				printf("pop here!\n");
-				i ++;
+				i++;
 				argstack.StackPop();
 				
 				break;
@@ -139,10 +162,19 @@ int CPU::Execution(char * codebuff)
 	
 			case OUT:
 				printf("out here\n");
-				i ++;
+				i++;
 				std::cout << "Answer is " << argstack.StackTop() << std::endl;
-				
 				argstack.StackPrint();
+				break;
+
+			case JMP:
+				printf("jump here\n");
+				printf("i = %d, command = %d\n", i, codebuff[i]);
+				i++;
+				i = codebuff[i];
+				std::cout << "Yo, i have jumped!" << std::endl;
+				printf("i = %d, command = %d\n", i, codebuff[i]);
+				exit(0);
 				break;
 
 			default :
