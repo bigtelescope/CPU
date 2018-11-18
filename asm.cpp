@@ -4,12 +4,10 @@
 #include <cstdlib>
 #include <cctype>
 
-//#include "head.h"
-
 typedef struct Label
 {
-	int 	adress;
-	int 	number;
+	int 	adress;//adress for a jump
+	int 	number;//adress for <adress> value in main buffer
 	char * 	name;
 }Label;
 
@@ -91,13 +89,10 @@ int ASM::ConvertAsm(char * argv)
 				i++;
 			i++;
 			labelpoint[number].adress = elem;
-			printf("\t\t\ti = %d, number = %d\n", i, number);
 		}
 		sscanf(first + i, "%s", word);
-		printf("word = %s, i = %d\n", first + i, i);
-		if(strcmp(word, "push") == 0)
+		/*if(strcmp(word, "push") == 0)
 		{
-			printf("\t\tpush pointer is %d\n", i);
 			for(int k = 0; k < 10; k++)
 				word[k] = '\0';
 			i += 5;
@@ -135,22 +130,17 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			int temp = 0;
 			sscanf(first + i, "%d", &temp);
-			printf("temp = %d\tsizetemp = %d\n", temp, 
-				   (int)(strchr(first + i, '\n') - first - i)); //useless
 			memcpy(second + j, &temp, sizeof(int));
 			j += sizeof(int);
 			i += (int)(strchr(first + i, '\n') - first - i) + 1; // "- 1" equals "\n"
-			printf("pointer = %s\n", first + i);//useless
 			elem += 5;
-		}
-		if(strcmp(word, "pop") == 0)
+		}*/
+		/*if(strcmp(word, "pop") == 0)
 		{
-			printf("yo, pop here = %s\n", first + i);
 			for(int k = 0; k < 10; k++)
 				word[k] = '\0';
 			i += 4;
 			sscanf(first + i, "%s", word);
-			printf("yo, reg here = %s\n", first + i);
 			if(strcmp(word, "rax") == 0)
 			{
 				*(second + j) = 6;
@@ -177,7 +167,7 @@ int ASM::ConvertAsm(char * argv)
 				word[k] = '\0';
 			j++;
 			elem ++;
-		}
+		}*/
 		/*if(strcmp(word, "add") == 0)
 		{
 			*(second + j) = 14;
@@ -188,7 +178,7 @@ int ASM::ConvertAsm(char * argv)
 			printf("%s\n", first + i);
 			elem ++;
 		}*/
-		if(strcmp(word, "div") == 0)
+		/*if(strcmp(word, "div") == 0)
 		{
 			*(second + j) = 13;
 			for(int k = 0; k < 10; k++)
@@ -197,8 +187,8 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			printf("%s\n", first + i);
 			elem ++;
-		}
-		if(strcmp(word, "mul") == 0)
+		}*/
+/*		if(strcmp(word, "mul") == 0)
 		{
 			*(second + j) = 12;
 			for(int k = 0; k < 10; k++)
@@ -207,8 +197,8 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			printf("%s\n", first + i);
 			elem ++;
-		}
-		if(strcmp(word, "sub") == 0)
+		}*/
+/*		if(strcmp(word, "sub") == 0)
 		{
 			*(second + j) = 11;
 			for(int k = 0; k < 10; k++)
@@ -237,8 +227,8 @@ int ASM::ConvertAsm(char * argv)
 			j++;
 			printf("%s\n", first + i);
 			elem ++;
-		}
-		if(strcmp(word, "jmp") == 0)
+		}*/
+		/*if(strcmp(word, "jmp") == 0)
 			{
 			*(second + j) = 20;
 			for(int k = 0; k < 10; k++)
@@ -246,12 +236,12 @@ int ASM::ConvertAsm(char * argv)
 			i += 5;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
 		}
 		if(strcmp(word, "ja") == 0)
@@ -262,12 +252,12 @@ int ASM::ConvertAsm(char * argv)
 			i += 4;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
 		}
 		if(strcmp(word, "jb") == 0)
@@ -278,12 +268,12 @@ int ASM::ConvertAsm(char * argv)
 			i += 4;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
 		}
 		if(strcmp(word, "je") == 0)
@@ -294,15 +284,15 @@ int ASM::ConvertAsm(char * argv)
 			i += 4;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
-		}
-		if(strcmp(word, "jne") == 0)
+		}*/
+		/*if(strcmp(word, "jne") == 0)
 		{
 			*(second + j) = 23;
 			for(int k = 0; k < 10; k++)
@@ -310,14 +300,14 @@ int ASM::ConvertAsm(char * argv)
 			i += 5;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
-		}
+		}*/
 		/*
 		if(strcmp(word, "jbe") == 0)
 		{
@@ -340,16 +330,14 @@ int ASM::ConvertAsm(char * argv)
 		//#define LINE *(second + j) = CMD_##NUM;
 		#define COMMAND( CMD , CODE )	\
 		if (strcmp(word, #CMD) == 0)\
-		{\
-			CODE	\
-		}\
+			CODE
 
-		#include "Commads.h"
+		#include "Defines.h"
 
 		#undef COMMAND
 
 
-		if(strcmp(word, "jae") == 0)
+		/*if(strcmp(word, "jae") == 0)
 		{
 			*(second + j) = 25;
 			for(int k = 0; k < 10; k++)
@@ -357,14 +345,14 @@ int ASM::ConvertAsm(char * argv)
 			i += 5;
 			j++;
 			sscanf(first + i, "%d", &lb);
+			labelpoint[lb].number = j;
 			*(second + j) = labelpoint[lb].adress;
 			while(*(first + i) != '\n')
 				i++;
 			i++;
 			j++;
-			printf("\t\tlabelpoint[%d].adress = %d\n", lb, labelpoint[lb].adress);
 			elem += 2;
-		}
+		}*/
 /*		if (*(first+i) == '\n')
 		{
 			printf("\033[31m	============	\033[33mFUCK	\033[31m============\033[0m\n");
@@ -375,7 +363,11 @@ int ASM::ConvertAsm(char * argv)
 	printf("yo, while ended\n");
 
 	for(int z = 0; z < 10; z++)
-		printf("\n\nnumber = %d, adress = %d\n", z, labelpoint[z].adress);
+	{
+		printf("\n\ncell = %d, adress = %d, number = %d\n", z, labelpoint[z].adress, labelpoint[z].number);
+		if(labelpoint[z].number)
+			*(second +  labelpoint[z].number) = labelpoint[z].adress;
+	}
 
 	FILE* binout = fopen("binout.txt", "wb");
 	fwrite(second, sizeof(char), j, binout);
