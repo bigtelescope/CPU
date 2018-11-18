@@ -2,42 +2,42 @@ COMMAND(push,{																		\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
-			sscanf(first + i, "%s", word);											\
-			if(isalpha(*(first + i)))												\
+			sscanf(arrasm + i, "%s", word);											\
+			if(isalpha(*(arrasm + i)))												\
 			{																		\
 				if(strcmp(word, "rax") == 0)										\
 				{																	\
-					*(second + j) = 1;												\
+					*(codearr + j) = 1;												\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rbx") == 0)										\
 				{																	\
-					*(second + j) = 2;												\
+					*(codearr + j) = 2;												\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rcx") == 0)										\
 				{																	\
-					*(second + j) = 3;												\
+					*(codearr + j) = 3;												\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rdx") == 0)										\
 				{																	\
-					*(second + j) = 4;												\
+					*(codearr + j) = 4;												\
 					i += 4;															\
 				}																	\
 				for(int k = 0; k < 10; k++)											\
 				word[k] = '\0';														\
 			}																		\
 			else																	\
-				*(second + j) = 5;													\
+				*(codearr + j) = 5;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
 			int temp = 0;															\
-			sscanf(first + i, "%d", &temp);											\
-			memcpy(second + j, &temp, sizeof(int));									\
+			sscanf(arrasm + i, "%d", &temp);										\
+			memcpy(codearr + j, &temp, sizeof(int));								\
 			j += sizeof(int);														\
-			i += (int)(strchr(first + i, '\n') - first - i) + 1; 					\
+			i += (int)(strchr(arrasm + i, '\n') - arrasm - i) + 1; 					\
 			elem += 5;}																\
 			)
 
@@ -45,29 +45,29 @@ COMMAND(pop,{																		\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
-			sscanf(first + i, "%s", word);											\
+			sscanf(arrasm + i, "%s", word);											\
 			if(strcmp(word, "rax") == 0)											\
 			{																		\
-				*(second + j) = 6;													\
+				*(codearr + j) = 6;													\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rbx") == 0)										\
 			{																		\
-				*(second + j) = 7;													\
+				*(codearr + j) = 7;													\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rcx") == 0)										\
 			{																		\
-				*(second + j) = 8;													\
+				*(codearr + j) = 8;													\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rdx") == 0)										\
 			{																		\
-				*(second + j) = 9;													\
+				*(codearr + j) = 9;													\
 				i += 4;																\
 			}																		\
 			else																	\
-				*(second + j) = 10;													\
+				*(codearr + j) = 10;												\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
@@ -75,15 +75,15 @@ COMMAND(pop,{																		\
 		)
 
 COMMAND(jmp,{																		\
-			*(second + j) = 20;														\
+			*(codearr + j) = 20;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
+			sscanf(arrasm + i, "%d", &lb);											\
 			labelpoint[lb].number = j;												\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -91,15 +91,15 @@ COMMAND(jmp,{																		\
 			)
 
 COMMAND(ja,{																		\
-			*(second + j) = 21;														\
+			*(codearr + j) = 21;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
+			sscanf(arrasm + i, "%d", &lb);											\
 			labelpoint[lb].number = j;												\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -107,15 +107,15 @@ COMMAND(ja,{																		\
 			)
 
 COMMAND(jb,{																		\
-			*(second + j) = 22;														\
+			*(codearr + j) = 22;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
+			sscanf(arrasm + i, "%d", &lb);											\
 			labelpoint[lb].number = j;												\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -123,15 +123,15 @@ COMMAND(jb,{																		\
 			)
 
 COMMAND(jne,{																		\
-			*(second + j) = 23;														\
+			*(codearr + j) = 23;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
+			sscanf(arrasm + i, "%d", &lb);											\
 			labelpoint[lb].number = j;												\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -139,14 +139,14 @@ COMMAND(jne,{																		\
 			)
 
 COMMAND(jbe,{																		\
-			*(second + j) = 24;														\
+			*(codearr + j) = 24;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			sscanf(arrasm + i, "%d", &lb);											\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -154,15 +154,15 @@ COMMAND(jbe,{																		\
 			)
 
 COMMAND(jae,{																		\
-			*(second + j) = 25;														\
+			*(codearr + j) = 25;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
 			j++;																	\
-			sscanf(first + i, "%d", &lb);											\
+			sscanf(arrasm + i, "%d", &lb);											\
 			labelpoint[lb].number = j;												\
-			*(second + j) = labelpoint[lb].adress;									\
-			while(*(first + i) != '\n')												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
 				i++;																\
 			i++;																	\
 			j++;																	\
@@ -170,63 +170,80 @@ COMMAND(jae,{																		\
 			)
 
 COMMAND(add, {																		\
-			*(second + j) = 14;														\
+			*(codearr + j) = 14;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
 COMMAND(div, {																		\
-			*(second + j) = 13;														\
+			*(codearr + j) = 13;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
 COMMAND(mul, {																		\
-			*(second + j) = 12;														\
+			*(codearr + j) = 12;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
 COMMAND(sub,{																		\
-			*(second + j) = 11;														\
+			*(codearr + j) = 11;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
 COMMAND(out,{																		\
-			*(second + j) = 15;														\
+			*(codearr + j) = 15;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
 COMMAND(end,{																		\
-			*(second + j) = 16;														\
+			*(codearr + j) = 16;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			printf("%s\n", first + i);												\
 			elem ++;}																\
 			)
 
+COMMAND(call,{                                    	                                \
+		*(codearr + j) = 17;														\
+		for(int k = 0; k < 10; k++)													\
+			word[k] = '\0';															\
+		i += 6;																		\
+		j++;																		\
+		sscanf(arrasm + i, "%d", &lb);												\
+		labelpoint[lb].number = j;													\
+		*(codearr + j) = labelpoint[lb].adress;										\
+		while(*(arrasm + i) != '\n')												\
+			i++;																	\
+		i++;																		\
+		j++;																		\
+		elem += 2;}																	\
+		)
 
+COMMAND(ret,{																		\
+		*(codearr + j) = 18;														\
+		for(int k = 0; k < 10; k++)													\
+			word[k] = '\0';															\
+		i +=4;																		\
+		j++;																		\
+		elem++;}																	\
+		)
