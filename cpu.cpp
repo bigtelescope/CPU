@@ -6,28 +6,13 @@
 
 const int DEFAULT_STACK_SIZE = 8;
 
-enum COMMANDS
+enum CMDS
 {
+	EXIT_FROM_CODE, 
 
-#define COMMAND(A, B) A_##NUM ,
-	#include "Commads.h"
-	N_CMDS
-#undef COMMAND
-
-
-
-
-
-
-	EXIT_FROM_CODE  = 0,
-	PUSH 			= 5,
-	ADD  			= 14,
-	MUL  			= 12,
-	SUB  			= 11,
-	POP  			= 10,
-	OUT  			= 15,
-	END  			= 16,
-	JMP				= 20
+	#define COMMAND(cmd, CMD, B) CMD,
+	#include "Defines.h"
+	#undef COMMAND
 };
 
 class CPU
@@ -94,24 +79,36 @@ int CPU::Execution(char * codebuff)
 		switch(codebuff[i])
 		{
 
-			#define COMMAND(A, B, C) \
+			/*#define COMMAND(A, B, C) \
 			case A_##NUM:			\
 			{						\
 				C 					\
 				break;				\
 			}					
 			#include "Commads.h"
-			#undef COMMAND
+			#undef COMMAND*/
 
-			case EXIT_FROM_CODE:
-				printf("You went out from your code\n");
-				break;
+			/*case EXIT_FROM_CODE:
+				printf("You went out from your code\nfirst =");
+				exit(0);
+				break;*/
 	
 			case PUSH:
 				printf("push here!\n");
 				printf("pointer to a push is %d\n", i);
 				argstack.StackPush(codebuff[i + 1]);
 				i += 5;
+				argstack.StackPrint();
+				break;
+	
+			case POP:
+				printf("add here!\n");
+				i ++;
+				num1 = argstack.StackTop();
+				argstack.StackPop();
+				num2 = argstack.StackTop();
+				argstack.StackPop();
+				argstack.StackPush(num1 + num2);
 				argstack.StackPrint();
 				break;
 	
@@ -126,8 +123,7 @@ int CPU::Execution(char * codebuff)
 			
 				argstack.StackPrint();
 				break;
-	
-	
+
 			case MUL:
 				printf("mul here!\n");
 				i ++;
@@ -149,16 +145,7 @@ int CPU::Execution(char * codebuff)
 				argstack.StackPop();
 				argstack.StackPush(num2 - num1);
 				argstack.StackPrint();
-				break;
-	
-	
-			case POP:
-				printf("pop here!\n");
-				i++;
-				argstack.StackPop();
-				
-				break;
-	
+				break;	
 	
 			case OUT:
 				printf("out here\n");
@@ -174,7 +161,6 @@ int CPU::Execution(char * codebuff)
 				i = codebuff[i];
 				std::cout << "Yo, i have jumped!" << std::endl;
 				printf("i = %d, command = %d\n", i, codebuff[i]);
-				exit(0);
 				break;
 
 			default :

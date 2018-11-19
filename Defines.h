@@ -1,4 +1,4 @@
-COMMAND(push,{																		\
+COMMAND(push, PUSH,{																\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
@@ -29,7 +29,7 @@ COMMAND(push,{																		\
 				word[k] = '\0';														\
 			}																		\
 			else																	\
-				*(codearr + j) = 5;													\
+				*(codearr + j) = PUSH;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
@@ -41,7 +41,7 @@ COMMAND(push,{																		\
 			elem += 5;}																\
 			)
 
-COMMAND(pop,{																		\
+COMMAND(pop, POP,{																	\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -67,15 +67,15 @@ COMMAND(pop,{																		\
 				i += 4;																\
 			}																		\
 			else																	\
-				*(codearr + j) = 10;												\
+				*(codearr + j) = POP;												\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
 			elem ++;}																\
 		)
 
-COMMAND(jmp,{																		\
-			*(codearr + j) = 20;													\
+COMMAND(jmp, JMP,{																	\
+			*(codearr + j) = JMP;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
@@ -90,8 +90,8 @@ COMMAND(jmp,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(ja,{																		\
-			*(codearr + j) = 21;													\
+COMMAND(ja, JA,{																	\
+			*(codearr + j) = JA;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -106,8 +106,8 @@ COMMAND(ja,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(jb,{																		\
-			*(codearr + j) = 22;													\
+COMMAND(jb, JB,{																	\
+			*(codearr + j) = JB;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -122,8 +122,8 @@ COMMAND(jb,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(jne,{																		\
-			*(codearr + j) = 23;													\
+COMMAND(jne, JNE,{																	\
+			*(codearr + j) = JNE;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
@@ -138,8 +138,8 @@ COMMAND(jne,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(jbe,{																		\
-			*(codearr + j) = 24;													\
+COMMAND(jne, JBE,{																	\
+			*(codearr + j) = JBE;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
@@ -153,8 +153,8 @@ COMMAND(jbe,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(jae,{																		\
-			*(codearr + j) = 25;													\
+COMMAND(jae, JAE,{																	\
+			*(codearr + j) = JAE;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 5;																	\
@@ -169,8 +169,8 @@ COMMAND(jae,{																		\
 			elem += 2;}																\
 			)
 
-COMMAND(add, {																		\
-			*(codearr + j) = 14;													\
+COMMAND(add, ADD, {																	\
+			*(codearr + j) = ADD;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -178,8 +178,8 @@ COMMAND(add, {																		\
 			elem ++;}																\
 			)
 
-COMMAND(div, {																		\
-			*(codearr + j) = 13;													\
+COMMAND(div, DIV, {																	\
+			*(codearr + j) = DIV;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -187,8 +187,8 @@ COMMAND(div, {																		\
 			elem ++;}																\
 			)
 
-COMMAND(mul, {																		\
-			*(codearr + j) = 12;													\
+COMMAND(mul, MUL, {																	\
+			*(codearr + j) = MUL;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -196,8 +196,8 @@ COMMAND(mul, {																		\
 			elem ++;}																\
 			)
 
-COMMAND(sub,{																		\
-			*(codearr + j) = 11;													\
+COMMAND(sub, SUB,{																	\
+			*(codearr + j) = SUB;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -205,8 +205,8 @@ COMMAND(sub,{																		\
 			elem ++;}																\
 			)
 
-COMMAND(out,{																		\
-			*(codearr + j) = 15;													\
+COMMAND(out, OUT,{																	\
+			*(codearr + j) = OUT;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -214,8 +214,8 @@ COMMAND(out,{																		\
 			elem ++;}																\
 			)
 
-COMMAND(end,{																		\
-			*(codearr + j) = 16;													\
+COMMAND(end, END,{																	\
+			*(codearr + j) = END;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			i += 4;																	\
@@ -223,8 +223,8 @@ COMMAND(end,{																		\
 			elem ++;}																\
 			)
 
-COMMAND(call,{                                    	                                \
-		*(codearr + j) = 17;														\
+COMMAND(call, CALL,{                                    	                        \
+		*(codearr + j) = CALL;														\
 		for(int k = 0; k < 10; k++)													\
 			word[k] = '\0';															\
 		i += 6;																		\
@@ -239,11 +239,12 @@ COMMAND(call,{                                    	                             
 		elem += 2;}																	\
 		)
 
-COMMAND(ret,{																		\
-		*(codearr + j) = 18;														\
+COMMAND(ret, RET,{																	\
+		*(codearr + j) = RET;														\
 		for(int k = 0; k < 10; k++)													\
 			word[k] = '\0';															\
 		i +=4;																		\
 		j++;																		\
 		elem++;}																	\
 		)
+

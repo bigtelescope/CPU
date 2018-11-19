@@ -99,8 +99,8 @@ int ASM::ConvertAsm(char * argv)
 
 		sscanf(arrasm + i, "%s", word);
 
-		#define COMMAND( CMD , CODE )	\
-		if (strcmp(word, #CMD) == 0)	\
+		#define COMMAND( cmd, CMD, CODE )	\
+		if (strcmp(word, #cmd) == 0)	\
 			CODE
 
 		#include "Defines.h"
