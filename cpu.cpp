@@ -10,7 +10,7 @@ enum CMDS
 {
 	EXIT_FROM_CODE, 
 
-	#define COMMAND(cmd, CMD, B) CMD,
+	#define COMMAND(cmd, CMD, CODE, CASE) CMD,
 	#include "Defines.h"
 	#undef COMMAND
 };
@@ -78,22 +78,21 @@ int CPU::Execution(char * codebuff)
 	{
 		switch(codebuff[i])
 		{
-
-			/*#define COMMAND(A, B, C) \
-			case A_##NUM:			\
+			#define COMMAND(cmd, CMD, CODE, CASE) \
+			case CMD:				\
 			{						\
-				C 					\
+				CASE				\
 				break;				\
 			}					
-			#include "Commads.h"
-			#undef COMMAND*/
+			#include "Defines.h"
+			#undef COMMAND
 
-			/*case EXIT_FROM_CODE:
-				printf("You went out from your code\nfirst =");
+			case EXIT_FROM_CODE:
+				printf("You went out from your code\n\n\n\n");
 				exit(0);
-				break;*/
+				break;
 	
-			case PUSH:
+/*			case PUSH:
 				printf("push here!\n");
 				printf("pointer to a push is %d\n", i);
 				argstack.StackPush(codebuff[i + 1]);
@@ -162,11 +161,12 @@ int CPU::Execution(char * codebuff)
 				std::cout << "Yo, i have jumped!" << std::endl;
 				printf("i = %d, command = %d\n", i, codebuff[i]);
 				break;
-
+*/
 			default :
 				printf("default\n");
 				i++;
 				break;
+
 		}
 	}
 	return 0;

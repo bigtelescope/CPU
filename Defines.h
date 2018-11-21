@@ -1,3 +1,80 @@
+COMMAND(push_rax, PUSH_RAX, {}, 													\
+								printf("push rax here!\n");							\
+								regarray[REG_A] = codebuff[i + 1];					\
+								i += 5;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+								printf("%d element is %ld\n", i, regarray[i]);		\
+								)
+
+COMMAND(push_rax, PUSH_RBX, {}, 													\
+								printf("push rax here!\n");							\
+								regarray[REG_B] = codebuff[i + 1];					\
+								i += 5;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+								printf("%d element is %ld\n", i, regarray[i]);		\
+								)
+
+COMMAND(push_rax, PUSH_RCX, {}, 													\
+								printf("push rax here!\n");							\
+								regarray[REG_C] = codebuff[i + 1];					\
+								i += 5;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+									printf("%d element is %ld\n", i, regarray[i]);	\
+								)
+
+COMMAND(push_rax, PUSH_RDX, {}, 													\
+								printf("push rax here!\n");							\
+								regarray[REG_D] = codebuff[i + 1];					\
+								i += 5;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+								printf("%d element is %ld\n", i, regarray[i]);		\
+								)
+
+COMMAND(pop_rax, POP_RAX, {},	 													\
+								printf("pop rax here!\n");							\
+								int top = argstack.StackTop();						\
+								regarray[REG_A] = top;								\
+								argstack.StackPop();								\
+								i++;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+									printf("%d element is %ld\n", i, regarray[i]);	\
+								argstack.StackPrint();								\
+								)
+
+COMMAND(pop_rax, POP_RBX, {},	 													\
+								printf("pop rax here!\n");							\
+								int top = argstack.StackTop();						\
+								regarray[REG_B] = top;								\
+								argstack.StackPop();								\
+								i++;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+									printf("%d element is %ld\n", i, regarray[i]);	\
+								argstack.StackPrint();								\
+								)
+
+COMMAND(pop_rax, POP_RCX, {},	 													\
+								printf("pop rax here!\n");							\
+								int top = argstack.StackTop();						\
+								regarray[REG_C] = top;								\
+								argstack.StackPop();								\
+								i++;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+									printf("%d element is %ld\n", i, regarray[i]);	\
+								argstack.StackPrint();								\
+								)
+
+COMMAND(pop_rax, POP_RDX, {},	 													\
+								printf("pop rax here!\n");							\
+								int top = argstack.StackTop();						\
+								regarray[REG_D] = top;								\
+								argstack.StackPop();								\
+								i++;												\
+								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
+									printf("%d element is %ld\n", i, regarray[i]);	\
+								argstack.StackPrint();								\
+								)
+								
+
 COMMAND(push, PUSH,{																\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
@@ -7,29 +84,29 @@ COMMAND(push, PUSH,{																\
 			{																		\
 				if(strcmp(word, "rax") == 0)										\
 				{																	\
-					*(codearr + j) = 1;												\
+					*(codearr + j) = PUSH_RAX;										\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rbx") == 0)										\
 				{																	\
-					*(codearr + j) = 2;												\
+					*(codearr + j) = PUSH_RBX;										\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rcx") == 0)										\
 				{																	\
-					*(codearr + j) = 3;												\
+					*(codearr + j) = PUSH_RCX;										\
 					i += 4;															\
 				}																	\
 				if(strcmp(word, "rdx") == 0)										\
 				{																	\
-					*(codearr + j) = 4;												\
+					*(codearr + j) = PUSH_RDX;										\
 					i += 4;															\
 				}																	\
 				for(int k = 0; k < 10; k++)											\
 				word[k] = '\0';														\
 			}																		\
 			else																	\
-				*(codearr + j) = PUSH;													\
+				*(codearr + j) = PUSH;												\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
@@ -38,7 +115,13 @@ COMMAND(push, PUSH,{																\
 			memcpy(codearr + j, &temp, sizeof(int));								\
 			j += sizeof(int);														\
 			i += (int)(strchr(arrasm + i, '\n') - arrasm - i) + 1; 					\
-			elem += 5;}																\
+			elem += 5;}, 															\
+																					\
+			printf("push %d here!\n", codebuff[i + 1]);													\
+			printf("pointer to a push is %d\n", i);									\
+			argstack.StackPush(codebuff[i + 1]);									\
+			i += 5;																	\
+			argstack.StackPrint();													\
 			)
 
 COMMAND(pop, POP,{																	\
@@ -48,22 +131,22 @@ COMMAND(pop, POP,{																	\
 			sscanf(arrasm + i, "%s", word);											\
 			if(strcmp(word, "rax") == 0)											\
 			{																		\
-				*(codearr + j) = 6;													\
+				*(codearr + j) = POP_RAX;											\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rbx") == 0)										\
 			{																		\
-				*(codearr + j) = 7;													\
+				*(codearr + j) = POP_RBX;											\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rcx") == 0)										\
 			{																		\
-				*(codearr + j) = 8;													\
+				*(codearr + j) = POP_RCX;											\
 				i += 4;																\
 			}																		\
 			else if(strcmp(word, "rdx") == 0)										\
 			{																		\
-				*(codearr + j) = 9;													\
+				*(codearr + j) = POP_RDX;											\
 				i += 4;																\
 			}																		\
 			else																	\
@@ -71,7 +154,12 @@ COMMAND(pop, POP,{																	\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
+																					\
+			{																		\
+			printf("pop here!\n");													\
+			i++;																	\
+			argstack.StackPop();}													\
 		)
 
 COMMAND(jmp, JMP,{																	\
@@ -87,7 +175,14 @@ COMMAND(jmp, JMP,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("jump here\n");													\
+			printf("i = %d, command = %d\n", i, codebuff[i]);						\
+			i++;																	\
+			i = codebuff[i];														\
+			std::cout << "Yo, i have jumped!" << std::endl;							\
+			printf("i = %d, command = %d\n", i, codebuff[i]);						\
 			)
 
 COMMAND(ja, JA,{																	\
@@ -103,7 +198,47 @@ COMMAND(ja, JA,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("ja here\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last > penult)														\
+				i = codebuff[i];													\
+			else																	\
+				i++;																\
+			std::cout << "Yo, i have jumped (ja)!" << std::endl;					\
+			)
+
+COMMAND(je, JE,{																	\
+			*(codearr + j) = JE;													\
+			for(int k = 0; k < 10; k++)												\
+				word[k] = '\0';														\
+			i += 4;																	\
+			j++;																	\
+			sscanf(arrasm + i, "%d", &lb);											\
+			labelpoint[lb].number = j;												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
+				i++;																\
+			i++;																	\
+			j++;																	\
+			elem += 2;}, 															\
+																					\
+			printf("je here\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last == penult)														\
+				i = codebuff[i];													\
+			else																	\
+				i++;																\
+			std::cout << "Yo, i have jumped (==)!" << std::endl;					\
 			)
 
 COMMAND(jb, JB,{																	\
@@ -119,7 +254,19 @@ COMMAND(jb, JB,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("jb here\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last < penult)														\
+				i = codebuff[i];													\
+			else																	\
+				i++;																\
+			std::cout << "Yo, i have jumped (jb)!" << std::endl;					\
 			)
 
 COMMAND(jne, JNE,{																	\
@@ -135,10 +282,22 @@ COMMAND(jne, JNE,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("jne here\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last != penult)														\
+				i = codebuff[i];													\
+			else																	\
+				i++;																\
+			std::cout << "Yo, i have jumped (!=)!" << std::endl;					\
 			)
 
-COMMAND(jne, JBE,{																	\
+COMMAND(jbe, JBE,{																	\
 			*(codearr + j) = JBE;													\
 			for(int k = 0; k < 10; k++)												\
 				word[k] = '\0';														\
@@ -150,7 +309,21 @@ COMMAND(jne, JBE,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("jbe here\n\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last <= penult )														\
+			{\
+				i = codebuff[i];													\
+				std::cout << "Yo, i have jumped (<=)!" << std::endl;					\
+			}\
+			else																	\
+				i++;																\
 			)
 
 COMMAND(jae, JAE,{																	\
@@ -166,7 +339,19 @@ COMMAND(jae, JAE,{																	\
 				i++;																\
 			i++;																	\
 			j++;																	\
-			elem += 2;}																\
+			elem += 2;}, 															\
+																					\
+			printf("jae here\n");													\
+			i++;																	\
+			int last = argstack.StackTop();											\
+			argstack.StackPop();													\
+			int penult = argstack.StackTop();										\
+			argstack.StackPush(last);												\
+			if(last >= penult)														\
+				i = codebuff[i];													\
+			else																	\
+				i++;																\
+			std::cout << "Yo, i have jumped (>=)!" << std::endl;					\
 			)
 
 COMMAND(add, ADD, {																	\
@@ -175,7 +360,16 @@ COMMAND(add, ADD, {																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
+																					\
+			printf("add here!\n");													\
+				i ++;																\
+				num1 = argstack.StackTop();											\
+				argstack.StackPop();												\
+				num2 = argstack.StackTop();											\
+				argstack.StackPop();												\
+				argstack.StackPush(num1 + num2);									\
+				argstack.StackPrint();												\
 			)
 
 COMMAND(div, DIV, {																	\
@@ -184,7 +378,7 @@ COMMAND(div, DIV, {																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
 			)
 
 COMMAND(mul, MUL, {																	\
@@ -193,7 +387,16 @@ COMMAND(mul, MUL, {																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
+																					\
+			printf("mul here!\n");													\
+			i ++;																	\
+			num1 = argstack.StackTop();												\
+			argstack.StackPop();													\
+			num2 = argstack.StackTop();												\
+			argstack.StackPop();													\
+			argstack.StackPush(num1 * num2);										\
+			argstack.StackPrint();													\
 			)
 
 COMMAND(sub, SUB,{																	\
@@ -202,7 +405,16 @@ COMMAND(sub, SUB,{																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
+																					\
+			printf("sub here!\n");													\
+			i ++;																	\
+			num1 = argstack.StackTop();												\
+			argstack.StackPop();													\
+			num2 = argstack.StackTop();												\
+			argstack.StackPop();													\
+			argstack.StackPush(num2 - num1);										\
+			argstack.StackPrint();													\
 			)
 
 COMMAND(out, OUT,{																	\
@@ -211,7 +423,12 @@ COMMAND(out, OUT,{																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
+																					\
+			printf("out here\n");													\
+			i++;																	\
+			std::cout << "Answer is " << argstack.StackTop() << std::endl;			\
+			argstack.StackPrint();													\
 			)
 
 COMMAND(end, END,{																	\
@@ -220,31 +437,64 @@ COMMAND(end, END,{																	\
 				word[k] = '\0';														\
 			i += 4;																	\
 			j++;																	\
-			elem ++;}																\
+			elem ++;}, 																\
 			)
 
 COMMAND(call, CALL,{                                    	                        \
-		*(codearr + j) = CALL;														\
-		for(int k = 0; k < 10; k++)													\
-			word[k] = '\0';															\
-		i += 6;																		\
-		j++;																		\
-		sscanf(arrasm + i, "%d", &lb);												\
-		labelpoint[lb].number = j;													\
-		*(codearr + j) = labelpoint[lb].adress;										\
-		while(*(arrasm + i) != '\n')												\
+			*(codearr + j) = CALL;													\
+			for(int k = 0; k < 10; k++)												\
+				word[k] = '\0';														\
+			i += 6;																	\
+			j++;																	\
+			sscanf(arrasm + i, "%d", &lb);											\
+			labelpoint[lb].number = j;												\
+			*(codearr + j) = labelpoint[lb].adress;									\
+			while(*(arrasm + i) != '\n')											\
+				i++;																\
 			i++;																	\
-		i++;																		\
-		j++;																		\
-		elem += 2;}																	\
+			j++;																	\
+			elem += 2;}, 															\
+																					\
+			printf("call here\n");													\
+			i++;																	\
+			jumpstack.StackPush(i + 1);												\
+			jumpstack.StackPrint();													\
+			i = codebuff[i];														\
+			std::cout << "Yo, i've done call!" << std::endl;						\
+			printf("i = %d, command = %d\n", i, codebuff[i]);						\
 		)
 
 COMMAND(ret, RET,{																	\
-		*(codearr + j) = RET;														\
-		for(int k = 0; k < 10; k++)													\
-			word[k] = '\0';															\
-		i +=4;																		\
-		j++;																		\
-		elem++;}																	\
+			*(codearr + j) = RET;													\
+			for(int k = 0; k < 10; k++)												\
+				word[k] = '\0';														\
+			i +=4;																	\
+			j++;																	\
+			elem++;}, 																\
+																					\
+		printf("ret here\n");														\
+			i = jumpstack.StackTop();												\
+			jumpstack.StackPop();													\
+			std::cout << "Yo, i've done ret!" << std::endl;							\
+			printf("i = %d, command = %d\n", i, codebuff[i]);						\
 		)
+
+COMMAND(sqrt, SQRT,{
+			*(codearr + j) = SQRT;													\
+			for(int k = 0; k < 10; k++)												\
+				word[k] = '\0';														\
+			i += 5;																	\
+			j++;																	\
+			elem++;},																\
+																					\
+			printf("sqrt here!\n");													\
+			i++;																	\
+			int top = argstack.StackTop();											\
+			top = sqrt(top);														\
+			argstack.StackPop();													\
+			argstack.StackPush(top);												\
+			printf("yo, i made a sqrt!\n");											\
+
+			)
+
 
