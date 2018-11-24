@@ -69,10 +69,10 @@ int ASM::CreateMem(int asmsize)
 
 int ASM::LabelAlloc(char * codearr, Label * labelpoint)
 {
-	printf("ORDINARY LABELS:\n");
+	printf("\nORDINARY LABELS:\n");
 	for(int i = 0; i < 10; i++)
 	{
-		printf("\n\ncell = %d, adress = %d, number = %d\n", i, labelpoint[i].adress, labelpoint[i].number);
+		printf("\ncell = %d, adress = %d, number = %d\n", i, labelpoint[i].adress, labelpoint[i].number);
 		if(labelpoint[i].number)
 			*(codearr +  labelpoint[i].number) = labelpoint[i].adress;
 	}
@@ -96,10 +96,11 @@ int ASM::ConvertAsm(char * argv)
 	while((*(arrasm + i) != '\0') && (i <= asmsize - 1))
 	{
 		LABELSEARCH()
+		COMMENTS()		
 
 		sscanf(arrasm + i, "%s", word);
 
-		#define COMMAND( cmd, CMD, CODE )	\
+		#define COMMAND( cmd, CMD, CODE, CASE)	\
 		if (strcmp(word, #cmd) == 0)	\
 			CODE
 
