@@ -69,12 +69,18 @@ CPU::CPU() :
 	jumpstack			(DEFAULT_STACK_SIZE),
 	regarray			((double *)calloc(AMOUNT_OF_REGISTERS, sizeof(double)))
 {
+/*
+	Проверку бы...
+ */
 	codebuff = NULL;
 	codebuffsize = 0;
 }
 
 CPU::~CPU()
 {
+/*
+	Маловато будет. Надо память-то освободить.
+ */
 	codebuff = NULL;
 }
 
@@ -110,10 +116,20 @@ char * CPU::Allocation(char * argv)
 
 double CPU::ConvertToDouble(char * a)
 {
+/*
+	Можно сразу 
+
+	return *(double*)a;
+
+	хоть я и не догнал, зачем эта магия...
+ */
 	double one  = *(double*)a;
 	return one;
 }
 
+/*
+	Аналогично
+ */
 int CPU::ConvertToInt(char *a)
 {
 	int two = *(int*)a;

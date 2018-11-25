@@ -12,6 +12,20 @@ push 4
 ; 	rex = x1		- first solution
 ;	rfx = x2		- second solution
 ; 	rgx = ¯\_(ツ)_/¯	- reserve register 	
+
+;	Просто между делом - регистры названы не по алфавиту))
+;	У них названия есть :)
+;	a - accumulator
+;	b - base
+;	c - counter
+;	d - data
+;	si - source index
+;	di - destination index
+;	sp - stack pointer
+;	ip - instruction pointer
+
+:	Вот так :)
+
 ;	rhx = D			- it's your discriminant
 ;----------------------------------------------------------
 pop rcx

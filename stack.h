@@ -25,7 +25,11 @@ typedef double Mytype;
 const int CANARY = 42;
 
 /* This array involve descriptions of errors*/
-static std::string DESCRIPT[] = 
+/*
+	Будем круче :)
+ */
+const static std::string 
+DESCRIPT[] = 
 {
 	"There are too many elements in your stack",
 	"One of your canaries was broken",
@@ -47,6 +51,9 @@ enum ERRORS
 };
 
 /* My stack*/
+/*
+	Really? :)
+ */
 class Stack
 {
 private:
