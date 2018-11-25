@@ -19,7 +19,7 @@
 	}while(0)
 
 /* MyType, you can change it on your own*/
-typedef int Mytype;
+typedef double Mytype;
 
 /* Canary is a little bird, who will be proud of her death*/
 const int CANARY = 42;

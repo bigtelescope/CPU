@@ -11,9 +11,9 @@
 			labelpoint[number].adress = elem;							\
 		}
 
-#define COMMENTS() if(*(arrasm + i) == ';')								\
+#define COMMENTS() while(*(arrasm + i) == ';')								\
 		{																\
-			while(*(arrasm + i) != '\n' && *(arrasm + i + 1) != ';')	\
+			while(*(arrasm + i) != '\n' && *(arrasm + i + 1) != ';' && (i < asmsize - 1))	\
 				i++;													\
 			i++;														\
 		}

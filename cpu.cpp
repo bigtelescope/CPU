@@ -1,14 +1,44 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 
 #include "head.h"
 
 const int DEFAULT_STACK_SIZE = 8;
+const int AMOUNT_OF_REGISTERS = 8;
 
-enum CMDS
+//#define _DBG
+
+#ifdef _DBG
+#define DBG
+#else
+#define DBG if(0)
+#endif
+
+enum REGISTERS
 {
-	EXIT_FROM_CODE, 
+	REG_A,
+	REG_B,
+	REG_C,
+	REG_D,
+	REG_E,
+	REG_F,
+	REG_G,
+	REG_H
+};
+
+enum ERRS
+{
+	EVERYTHING_OK			= -1,
+	INCORRECT_ARGUMENT		= -2,
+	CANT_OPEN_FILE			= -3,
+	ERROR_MEM_ALLOCATING 	= -4
+};
+
+enum COMMANDS
+{
+	EXIT_FROM_CODE,
 
 	#define COMMAND(cmd, CMD, CODE, CASE) CMD,
 	#include "Defines.h"
@@ -21,6 +51,8 @@ private:
 	char * 		codebuff;      //pointer to an array with commands
 	int 		codebuffsize;  //size of codebuf[]
 	Stack		argstack;      //stack with arguments
+	Stack 		jumpstack;	   //stack for jmp command
+	double * 	regarray;	   //array for registers (there are four members)
 
 public:
 	CPU();
@@ -28,10 +60,13 @@ public:
 	int FileSize(FILE * textptr);
 	char * Allocation(char * argv);
 	int Execution(char * codebuff);
+	double ConvertToDouble(char *);
 };
 
 CPU::CPU() :
-	argstack(DEFAULT_STACK_SIZE)
+	argstack			(DEFAULT_STACK_SIZE),
+	jumpstack			(DEFAULT_STACK_SIZE),
+	regarray			((double *)calloc(AMOUNT_OF_REGISTERS, sizeof(double)))
 {
 	codebuff = NULL;
 	codebuffsize = 0;
@@ -45,7 +80,7 @@ CPU::~CPU()
 int CPU::FileSize(FILE * textptr)
 {	
 	if(!textptr)
-		return -1;
+		return INCORRECT_ARGUMENT;
 	long long curroff = ftell(textptr);
 	fseek(textptr, 0, SEEK_END);
 	long long size = ftell(textptr);
@@ -55,25 +90,37 @@ int CPU::FileSize(FILE * textptr)
 
 char * CPU::Allocation(char * argv)
 {
-	//if(!argv)
-		//return -1;
+	if(!argv)
+		return NULL;
+
 	FILE * textptr = fopen(argv, "r");
-	//if(!textptr)
-		//return -1;
+	if(!textptr)
+		return NULL;
+
 	codebuffsize = FileSize(textptr);
 	codebuff = (char *)calloc(codebuffsize, sizeof(char));
-	//if(!codebuff)
-		//return -1;
+	if(!codebuff)
+		return NULL;
+
 	fread(codebuff, sizeof(char), codebuffsize, textptr);///check
 
 	return codebuff;
 }
 
+double CPU::ConvertToDouble(char * a)
+{
+	double one  = *(double*)a;
+	return one;
+}
+
 int CPU::Execution(char * codebuff)
 {
+	if(!codebuff)
+		return INCORRECT_ARGUMENT;
+
 	int i = 0;
-	int num1 = 0;
-	int num2 = 0;
+	double num1 = 0;
+	double num2 = 0;
 	while(codebuff[i] != END)
 	{
 		switch(codebuff[i])
@@ -92,81 +139,10 @@ int CPU::Execution(char * codebuff)
 				exit(0);
 				break;
 	
-/*			case PUSH:
-				printf("push here!\n");
-				printf("pointer to a push is %d\n", i);
-				argstack.StackPush(codebuff[i + 1]);
-				i += 5;
-				argstack.StackPrint();
-				break;
-	
-			case POP:
-				printf("add here!\n");
-				i ++;
-				num1 = argstack.StackTop();
-				argstack.StackPop();
-				num2 = argstack.StackTop();
-				argstack.StackPop();
-				argstack.StackPush(num1 + num2);
-				argstack.StackPrint();
-				break;
-	
-			case ADD:
-				printf("add here!\n");
-				i ++;
-				num1 = argstack.StackTop();
-				argstack.StackPop();
-				num2 = argstack.StackTop();
-				argstack.StackPop();
-				argstack.StackPush(num1 + num2);
-			
-				argstack.StackPrint();
-				break;
-
-			case MUL:
-				printf("mul here!\n");
-				i ++;
-				num1 = argstack.StackTop();
-				argstack.StackPop();
-				num2 = argstack.StackTop();
-				argstack.StackPop();
-				argstack.StackPush(num1 * num2);
-				argstack.StackPrint();
-				break;
-	
-	
-			case SUB:
-				printf("sub here!\n");
-				i ++;
-				num1 = argstack.StackTop();
-				argstack.StackPop();
-				num2 = argstack.StackTop();
-				argstack.StackPop();
-				argstack.StackPush(num2 - num1);
-				argstack.StackPrint();
-				break;	
-	
-			case OUT:
-				printf("out here\n");
-				i++;
-				std::cout << "Answer is " << argstack.StackTop() << std::endl;
-				argstack.StackPrint();
-				break;
-
-			case JMP:
-				printf("jump here\n");
-				printf("i = %d, command = %d\n", i, codebuff[i]);
-				i++;
-				i = codebuff[i];
-				std::cout << "Yo, i have jumped!" << std::endl;
-				printf("i = %d, command = %d\n", i, codebuff[i]);
-				break;
-*/
 			default :
-				printf("default\n");
+				printf("\n\nUnfortunately i met undefined command:(\n\n\n");
 				i++;
 				break;
-
 		}
 	}
 	return 0;
@@ -177,9 +153,13 @@ int main(int argc, char * argv[])
 	if (argc != 2)
 	{
 		printf("Ty debil, vvedi 2 argumenta epta\n");
-		return -1;
+		return INCORRECT_ARGUMENT;
 	}
+
 	CPU one;
 	one.Execution(one.Allocation(argv[1]));
-	//std::cout << std::endl;
+
+
+	DBG printf("hi\n");
+	return 0;
 }

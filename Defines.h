@@ -1,55 +1,55 @@
 COMMAND(push_rax, PUSH_RAX, {}, 													\
-								printf("push rax here!\n");							\
+								DBG printf("push rax here!\n");						\
 								argstack.StackPush(regarray[REG_A]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 
 COMMAND(push_rbx, PUSH_RBX, {}, 													\
-								printf("push rbx here!\n");							\
+								DBG printf("push rbx here!\n");						\
 								argstack.StackPush(regarray[REG_B]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 
 COMMAND(push_rcx, PUSH_RCX, {}, 													\
-								printf("push rcx here!\n");							\
+								DBG printf("push rcx here!\n");						\
 								argstack.StackPush(regarray[REG_C]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 
 COMMAND(push_rdx, PUSH_RDX, {}, 													\
-								printf("push rdx here!\n");							\
+								DBG printf("push rdx here!\n");						\
 								argstack.StackPush(regarray[REG_D]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 
 COMMAND(push_rex, PUSH_REX, {}, 													\
-								printf("push rex here!\n");							\
+								DBG printf("push rex here!\n");						\
 								argstack.StackPush(regarray[REG_E]);				\
 								regarray[REG_E] = 0;								\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 COMMAND(push_rfx, PUSH_RFX, {}, 													\
-								printf("push rfx here!\n");							\
+								DBG printf("push rfx here!\n");						\
 								argstack.StackPush(regarray[REG_F]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 COMMAND(push_rgx, PUSH_RGX, {}, 													\
-								printf("push rgx here!\n");							\
+								DBG printf("push rgx here!\n");						\
 								argstack.StackPush(regarray[REG_G]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 COMMAND(push_rhx, PUSH_RHX, {}, 													\
-								printf("push rhx here!\n");							\
+								DBG printf("push rhx here!\n");						\
 								argstack.StackPush(regarray[REG_H]);				\
 								i++;												\
-								argstack.StackPrint();								\
+								DBG argstack.StackPrint();							\
 								)
 
 COMMAND(pop_rax, POP_RAX, {},	 													\
@@ -59,7 +59,7 @@ COMMAND(pop_rax, POP_RAX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -70,7 +70,7 @@ COMMAND(pop_rax, POP_RBX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -81,7 +81,7 @@ COMMAND(pop_rax, POP_RCX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -92,7 +92,7 @@ COMMAND(pop_rax, POP_RDX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -103,7 +103,7 @@ COMMAND(pop_rax, POP_REX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -114,7 +114,7 @@ COMMAND(pop_rax, POP_RFX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -125,7 +125,7 @@ COMMAND(pop_rax, POP_RGX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 
@@ -136,7 +136,7 @@ COMMAND(pop_rax, POP_RHX, {},	 													\
 								argstack.StackPop();								\
 								i++;												\
 								for(int i = 0; i < AMOUNT_OF_REGISTERS; i++)		\
-									printf("%d element is %ld\n", i, regarray[i]);	\
+									printf("%d element is %lg\n", i, regarray[i]);	\
 								argstack.StackPrint();								\
 								)
 								
@@ -189,8 +189,8 @@ COMMAND(push, PUSH, {																\
 				}																	\
 				for(int k = 0; k < 10; k++)											\
 				word[k] = '\0';														\
-				elem++;\
-				j++;\
+				elem++;																\
+				j++;																\
 			}																		\
 			else																	\
 			{																		\
@@ -198,18 +198,20 @@ COMMAND(push, PUSH, {																\
 				for(int k = 0; k < 10; k++)											\
 					word[k] = '\0';													\
 				j++;																\
-				int temp = 0;														\
-				sscanf(arrasm + i, "%d", &temp);									\
-				memcpy(codearr + j, &temp, sizeof(int));							\
-				j += sizeof(int);													\
+				double temp = 0;													\
+				sscanf(arrasm + i, "%lg", &temp);									\
+				memcpy(codearr + j, &temp, sizeof(double));							\
+				j += sizeof(double);												\
 				i += (int)(strchr(arrasm + i, '\n') - arrasm - i) + 1; 				\
-				elem += 5;}															\
-			},				 														\
+				elem += 9;															\
+			};},			 														\
 																					\
-				printf("push %d here!\n", codebuff[i + 1]);							\
+				printf("i = %d\n", i);												\
+				printf("push %lg here!\n", ConvertToDouble(&codebuff[i + 1]));		\
+				printf("i = %d\n", i);												\
 				printf("pointer to a push is %d\n", i);								\
-				argstack.StackPush(codebuff[i + 1]);								\
-				i += 5;																\
+				argstack.StackPush( ConvertToDouble(&codebuff[i + 1]));				\
+				i += sizeof(double) + 1;											\
 				argstack.StackPrint();												\
 			)
 
@@ -311,9 +313,9 @@ COMMAND(ja, JA,{																	\
 																					\
 			printf("ja here\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();										\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();									\
 			argstack.StackPush(last);												\
 			if(last > penult)														\
 			{																		\
@@ -344,9 +346,9 @@ COMMAND(je, JE,{																	\
 																					\
 			printf("je here\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();											\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();										\
 			argstack.StackPush(last);												\
 			if(last == penult)														\
 			{																		\
@@ -377,9 +379,9 @@ COMMAND(jb, JB,{																	\
 																					\
 			printf("jb here\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();											\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();										\
 			argstack.StackPush(last);												\
 			if(last < penult)														\
 			{																		\
@@ -410,9 +412,9 @@ COMMAND(jne, JNE,{																	\
 																					\
 			printf("jne here\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();											\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();										\
 			argstack.StackPush(last);												\
 			if(last != penult)														\
 			{																		\
@@ -443,9 +445,9 @@ COMMAND(jbe, JBE,{																	\
 																					\
 			printf("jbe here\n\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();											\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();										\
 			argstack.StackPush(last);												\
 			if(last <= penult )														\
 			{																		\
@@ -476,9 +478,9 @@ COMMAND(jae, JAE,{																	\
 																					\
 			printf("jae here\n");													\
 			i++;																	\
-			int last = argstack.StackTop();											\
+			double last = argstack.StackTop();											\
 			argstack.StackPop();													\
-			int penult = argstack.StackTop();										\
+			double penult = argstack.StackTop();										\
 			argstack.StackPush(last);												\
 			if(last >= penult)														\
 			{																		\
@@ -572,10 +574,10 @@ COMMAND(out, OUT,{																	\
 			j++;																	\
 			elem ++;}, 																\
 																					\
-			printf("out here\n");													\
+			DBG printf("out here\n");													\
 			i++;																	\
 			std::cout << "Answer is " << argstack.StackTop() << std::endl;			\
-			argstack.StackPrint();													\
+			DBG argstack.StackPrint();													\
 			)
 
 COMMAND(end, END,{																	\
@@ -637,7 +639,7 @@ COMMAND(sqrt, SQRT,{
 																					\
 			printf("sqrt here!\n");													\
 			i++;																	\
-			int top = argstack.StackTop();											\
+			double top = argstack.StackTop();											\
 			top = sqrt(top);														\
 			argstack.StackPop();													\
 			argstack.StackPush(top);												\
@@ -654,7 +656,7 @@ COMMAND(sq, SQ,{
 																					\
 			printf("sq here!\n");													\
 			i++;																	\
-			int top = argstack.StackTop();											\
+			double top = argstack.StackTop();											\
 			top = top * top;														\
 			argstack.StackPop();													\
 			argstack.StackPush(top);												\

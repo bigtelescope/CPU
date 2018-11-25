@@ -84,7 +84,7 @@ int ASM::ConvertAsm(char * argv)
 	asmbuff = fopen(argv, "r");
 	asmsize = FileSize(asmbuff);
 
-	char word[10];
+	char word[100];
 	CreateMem(asmsize);
 	fread(arrasm, sizeof(char), asmsize, asmbuff);
 	fclose(asmbuff);
@@ -99,6 +99,7 @@ int ASM::ConvertAsm(char * argv)
 		COMMENTS()		
 
 		sscanf(arrasm + i, "%s", word);
+		printf("word = %s\n", word);
 
 		#define COMMAND( cmd, CMD, CODE, CASE)	\
 		if (strcmp(word, #cmd) == 0)	\
