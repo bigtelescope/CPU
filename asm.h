@@ -18,6 +18,8 @@
 			i++;														\
 		}
 
+const int DEFAULT_LABEL_SIZE = 10;
+
 enum REGISTERS
 {
 	REG_A,

@@ -50,7 +50,7 @@ int ASM::MakeBinout(char * codearr, int j)
 
 int ASM::CreateMem(int asmsize)
 {
-	labelpoint = (Label *)calloc(10, sizeof(Label));
+	labelpoint = (Label *)calloc(DEFAULT_LABEL_SIZE, sizeof(Label));
 	if(!labelpoint)
 		return -3;
 
@@ -74,7 +74,11 @@ int ASM::LabelAlloc(char * codearr, Label * labelpoint)
 	{
 		printf("\ncell = %d, adress = %d, number = %d\n", i, labelpoint[i].adress, labelpoint[i].number);
 		if(labelpoint[i].number)
-			*(codearr +  labelpoint[i].number) = labelpoint[i].adress;
+		{
+			//*(codearr +  labelpoint[i].number) = labelpoint[i].adress;
+			memcpy(codearr +  labelpoint[i].number, &(labelpoint[i].adress), sizeof(int));
+			printf("good good good good %d\n\n", *(int*)(codearr +  labelpoint[i].number));
+		}
 	}
 	return 0;
 }

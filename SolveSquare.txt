@@ -1,0 +1,84 @@
+push 0.25
+push 2
+push 4
+;----------------------------------------------------------
+;Hello, man
+;I'm a programm for calculation of solutions of an equation
+;So, there are different values in your registers:
+;	rax = a 		- coefficient before x^2
+;	rbx = b			- coefficient before x
+;	rcx = c			- free coefficient
+; 	rdx = N 		- amount of solutions
+; 	rex = x1		- first solution
+;	rfx = x2		- second solution
+; 	rgx = ¯\_(ツ)_/¯	- reserve register 	
+;	rhx = D			- it's your discriminant
+;----------------------------------------------------------
+pop rcx
+pop rbx
+pop rax
+push 0 ;0 for comparing with D
+call :1
+jb :2 ; if D < 0
+je :3 ; if D = 0
+ja :4 ; if D > 0
+end
+:1 ; Calculating of D
+push rbx
+sq
+push rcx
+push rax
+push 4
+mul
+mul
+sub
+pop rhx
+push rhx
+ret
+:2 ; if D < 0
+push 0
+push 0
+push 0
+pop rdx
+pop rex
+pop rfx
+preg
+end
+:3 ; if D = 0
+push 1
+pop rdx
+push rbx
+push -1
+mul
+push 2
+push rcx
+mul
+div
+pop rex
+preg
+end
+:4 ; if D > 0 you have 2 solutions
+push 2
+pop rdx
+push rbx
+push -1
+mul
+push rhx
+sub
+push 2
+push rcx
+mul
+div
+pop rex
+push rbx
+push -1
+mul
+push rhx
+add
+push 2
+push rcx
+mul
+div
+pop rfx
+preg
+end

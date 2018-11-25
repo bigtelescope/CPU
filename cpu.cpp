@@ -61,6 +61,7 @@ public:
 	char * Allocation(char * argv);
 	int Execution(char * codebuff);
 	double ConvertToDouble(char *);
+	int ConvertToInt(char *);
 };
 
 CPU::CPU() :
@@ -111,6 +112,12 @@ double CPU::ConvertToDouble(char * a)
 {
 	double one  = *(double*)a;
 	return one;
+}
+
+int CPU::ConvertToInt(char *a)
+{
+	int two = *(int*)a;
+	return two;
 }
 
 int CPU::Execution(char * codebuff)
