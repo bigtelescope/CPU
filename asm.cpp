@@ -9,42 +9,57 @@
 ASM::ASM()
 {
 	asmbuff = NULL;
-	arrasm = NULL;
+	arrasm  = NULL;
 	codearr = NULL;
-	asmsize = 0;
-	arrasmsize = 0;
+	asmsize 	= 0;
+	arrasmsize 	= 0;
 }
 
 ASM::~ASM()
 {
-	asmbuff = NULL;
-	arrasm = NULL;
-	codearr = NULL;
+	free	(asmbuff);
+	free	(arrasm);
+	free	(codearr);
+	asmsize 	= 0;
+	arrasmsize 	= 0;
 }
 
 int ASM::FileSize(FILE * textptr)
 {	
 	if(textptr == NULL)
-		return -1;
+		return INCORRECT_ARGS;
 
 	long long curroff = ftell(textptr);
-	fseek(textptr, 0, SEEK_END);
+	if(curroff < 0)
+		return SIZE_DEF_ERROR;
+
+	if(fseek(textptr, 0, SEEK_END))
+		return SIZE_DEF_ERROR;
+
 	long long size = ftell(textptr);
-	fseek(textptr, curroff, SEEK_SET);
+	if(size < 0)
+		return SIZE_DEF_ERROR;
+
+	if(fseek(textptr, curroff, SEEK_SET))
+		return SIZE_DEF_ERROR;
+
 	return size;
 }
 
 int ASM::MakeBinout(char * codearr, int j)
 {
 	if(!codearr)
-		return 1;
+		return INCORRECT_ARGS;
 
 	FILE* binout = fopen("binout.txt", "wb");
 	if(!binout)
-		return -2;
+		return FILE_READING_ERROR;
 	
-	fwrite(codearr, sizeof(char), j, binout);
+	if((fwrite(codearr, sizeof(char), j, binout)) != j)
+		return FILE_WRITING_ERROR;
+
 	fclose(binout);
+
 	return 0;
 }
 
@@ -52,17 +67,20 @@ int ASM::CreateMem(int asmsize)
 {
 	labelpoint = (Label *)calloc(DEFAULT_LABEL_SIZE, sizeof(Label));
 	if(!labelpoint)
-		return -3;
+		return MEM_ALLOC_ERROR;
 
-	arrasm = (char *)calloc(asmsize + 1, sizeof(char));// here is initial text
+	// here is initial text
+	arrasm = (char *)calloc(asmsize + 1, sizeof(char));
 	if(!arrasm)
-		return -3;
+		return MEM_ALLOC_ERROR;
+
 	for(int k = 0; k < asmsize; k++)
 		arrasm[k] = '\0';
 
-	codearr = (char *)calloc(asmsize, sizeof(char));// here is machine code
+	// here is machine code
+	codearr = (char *)calloc(asmsize, sizeof(char));
 	if(!codearr)
-		return -3;
+		return MEM_ALLOC_ERROR;
 
 	return 0;
 }
@@ -75,7 +93,6 @@ int ASM::LabelAlloc(char * codearr, Label * labelpoint)
 		printf("\ncell = %d, adress = %d, number = %d\n", i, labelpoint[i].adress, labelpoint[i].number);
 		if(labelpoint[i].number)
 		{
-			//*(codearr +  labelpoint[i].number) = labelpoint[i].adress;
 			memcpy(codearr +  labelpoint[i].number, &(labelpoint[i].adress), sizeof(int));
 			printf("good good good good %d\n\n", *(int*)(codearr +  labelpoint[i].number));
 		}
@@ -85,7 +102,13 @@ int ASM::LabelAlloc(char * codearr, Label * labelpoint)
 
 int ASM::ConvertAsm(char * argv)
 {
+	if(!argv)
+		return INCORRECT_ARGS;
+
 	asmbuff = fopen(argv, "r");
+	if(!asmbuff)
+		return FILE_READING_ERROR;
+
 	asmsize = FileSize(asmbuff);
 
 	char word[100];
@@ -99,10 +122,12 @@ int ASM::ConvertAsm(char * argv)
 	int elem = 0;//amount of elements into binout.txt
 	while((*(arrasm + i) != '\0') && (i <= asmsize - 1))
 	{
-		LABELSEARCH()
-		COMMENTS()		
+		LABELSEARCH();
+		COMMENTS();	
 
-		sscanf(arrasm + i, "%s", word);
+		if((sscanf(arrasm + i, "%s", word)) < 0)
+			return ARRAY_READING_ERROR;
+		
 		printf("word = %s\n", word);
 
 		#define COMMAND( cmd, CMD, CODE, CASE)	\

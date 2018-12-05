@@ -1,7 +1,12 @@
 #ifndef ASM_H_
 #define ASM_H_
 
-#define LABELSEARCH() if(*(arrasm + i) == ':')							\
+/*! \brief Searching labels in asm code
+	This macros have to find every label in code and to alllocate it
+	in special array of structures
+*/
+#define LABELSEARCH() do{												\
+		if(*(arrasm + i) == ':')										\
 		{																\
 			int number = 0;												\
 			sscanf(arrasm + i + 1, "%d", &number);						\
@@ -9,16 +14,33 @@
 				i++;													\
 			i++;														\
 			labelpoint[number].adress = elem;							\
-		}
+		}}																\
+		while(0)
 
-#define COMMENTS() while(*(arrasm + i) == ';')								\
-		{																\
-			while(*(arrasm + i) != '\n' && *(arrasm + i + 1) != ';' && (i < asmsize - 1))	\
-				i++;													\
-			i++;														\
-		}
+/*! \brief Reading comments in code
+	This one allows to compiler to ignore comments in code
+*/
+#define COMMENTS() do{ 																	\
+		while(*(arrasm + i) == ';')														\
+		{																				\
+		while(*(arrasm + i) != '\n' && *(arrasm + i + 1) != ';' && (i < asmsize - 1))	\
+			i++;																		\
+		i++;																			\
+		}}																				\
+		while(0)
 
 const int DEFAULT_LABEL_SIZE = 10;
+
+// Enum for errors constants
+enum ERRORS
+{
+	INCORRECT_ARGS 		= -1,
+	SIZE_DEF_ERROR 		= -2,
+	FILE_READING_ERROR 	= -3,
+	FILE_WRITING_ERROR	= -4,
+	ARRAY_READING_ERROR = -5,
+	MEM_ALLOC_ERROR		= -6	
+};
 
 enum REGISTERS
 {
@@ -32,6 +54,10 @@ enum REGISTERS
 	REG_H
 };
 
+/*! \brief Here's magic
+	In this enum opens every macros from "Defines.h"
+	and here appear numbered command:)
+*/
 enum COMMANDS
 {
 	EXIT_FROM_CODE,
@@ -41,6 +67,7 @@ enum COMMANDS
 	#undef COMMAND
 };
 
+/*! \brief Struct for work with labels*/
 typedef struct Label
 {
 	int 	adress;//adress for a jump
@@ -51,22 +78,21 @@ typedef struct Label
 class ASM
 {
 private:
-	FILE  * 	asmbuff;
-	int 		asmsize;
-	char  *		arrasm;
-	int 		arrasmsize;
-	char  * 	codearr;
-	Label * 	labelpoint;
+	FILE  * 	asmbuff;		// Pointer to a file with asm
+	int 		asmsize;		// Size of file asmbuff points to
+	char  *		arrasm;			// Pointer to an array that keeps asm code
+	int 		arrasmsize;		// Size of an array with asm code
+	char  * 	codearr;		// Pointer to an array with machine code
+	Label * 	labelpoint;		// Pointer to an array of struct "Label"
 
 public:
 	ASM();
 	~ASM();
-	int FileSize			(FILE * );//returns size of an input text
-	int ConvertAsm			(char * argv);
-	int MakeBinout			(char *, int);//makes binout.txt
-	int CreateMem			(int);//calloc's for all
-	int LabelAlloc  		(char * , Label *);
+	int FileSize			(FILE * );				// Returns size of an input text
+	int ConvertAsm			(char * argv);			// Converts an asm code to a machine code
+	int MakeBinout			(char *, int);			// Makes "binout.txt" with machine code
+	int CreateMem			(int);					// Calloc's for all
+	int LabelAlloc  		(char * , Label *);		// Allocates labels to an array with asm code
 };
 
 #endif
-
