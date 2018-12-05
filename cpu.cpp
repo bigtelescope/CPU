@@ -32,10 +32,15 @@ enum ERRS
 {
 	EVERYTHING_OK			= -1,
 	INCORRECT_ARGUMENT		= -2,
-	CANT_OPEN_FILE			= -3,
-	ERROR_MEM_ALLOCATING 	= -4
+	FILE_READING_ERROR 		= -3,
+	MEM_ALLOC_ERROR			= -4,
+	SIZE_DEF_ERROR 			= -5
 };
 
+/*! \brief Here's magic
+	In this enum opens every macros from "Defines.h"
+	and here appear numbered command:)
+*/
 enum COMMANDS
 {
 	EXIT_FROM_CODE,
@@ -52,16 +57,16 @@ private:
 	int 		codebuffsize;  //size of codebuf[]
 	Stack		argstack;      //stack with arguments
 	Stack 		jumpstack;	   //stack for jmp command
-	double * 	regarray;	   //array for registers (there are four members)
+	double * 	regarray;	   //array for registers (there are eight members)
 
 public:
 	CPU();
 	~CPU();
-	int FileSize(FILE * textptr);
-	char * Allocation(char * argv);
-	int Execution(char * codebuff);
-	double ConvertToDouble(char *);
-	int ConvertToInt(char *);
+	int FileSize(FILE * textptr);		// Defines a size of a file with machine code
+	char * Allocation(char * argv);		// Copies information from file to an array
+	int Execution(char * codebuff);		// Translation of a machine code to C-commands
+	double ConvertToDouble(char *);		// Converts pointer to a char to a pointer to a double
+	int ConvertToInt(char *);			// Converts pointer to a char to a pointer to an int
 };
 
 CPU::CPU() :
@@ -75,7 +80,11 @@ CPU::CPU() :
 
 CPU::~CPU()
 {
-	codebuff = NULL;
+	free		(codebuff);
+	free		(regarray);
+	codebuffsize = 0;
+	argstack.~Stack();
+	jumpstack.~Stack();
 }
 
 int CPU::FileSize(FILE * textptr)
@@ -83,9 +92,19 @@ int CPU::FileSize(FILE * textptr)
 	if(!textptr)
 		return INCORRECT_ARGUMENT;
 	long long curroff = ftell(textptr);
-	fseek(textptr, 0, SEEK_END);
+	if(curroff < 0)
+		return FILE_READING_ERROR;
+
+	if(fseek(textptr, 0, SEEK_END))
+		return SIZE_DEF_ERROR;
+
 	long long size = ftell(textptr);
-	fseek(textptr, curroff, SEEK_SET);
+	if(size < 0)
+		return FILE_READING_ERROR;
+
+	if(fseek(textptr, curroff, SEEK_SET))
+		return SIZE_DEF_ERROR;
+
 	return size;
 }
 
@@ -99,6 +118,9 @@ char * CPU::Allocation(char * argv)
 		return NULL;
 
 	codebuffsize = FileSize(textptr);
+	if(codebuffsize < 0)
+		return NULL;
+
 	codebuff = (char *)calloc(codebuffsize, sizeof(char));
 	if(!codebuff)
 		return NULL;
@@ -110,14 +132,12 @@ char * CPU::Allocation(char * argv)
 
 double CPU::ConvertToDouble(char * a)
 {
-	double one  = *(double*)a;
-	return one;
+	return *(double*)a;
 }
 
 int CPU::ConvertToInt(char *a)
 {
-	int two = *(int*)a;
-	return two;
+	return *(int*)a;
 }
 
 int CPU::Execution(char * codebuff)
